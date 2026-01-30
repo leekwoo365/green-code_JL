@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친환경 법규 검토 시스템</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 8v24M8 20h24" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>친환경 법규 검토 시스템</h1>
+                        <p>Green Building Regulation Checker v2025.11</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-reset" onclick="resetForm()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        초기화
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="section-header">
+                    <h2>
+                        <span class="section-number">01</span>
+                        건축물 정보 입력
+                    </h2>
+                    <p class="section-desc">법규 검토에 필요한 건축물 정보를 입력해 주세요.</p>
+                </div>
+
+                <form id="regulationForm" class="input-form">
+                    <!-- Required Fields -->
+                    <div class="form-group-title">
+                        <span class="badge required">필수</span>
+                        기본 정보
+                    </div>
+
+                    <div class="form-grid">
+                        <!-- 소유주체 -->
+                        <div class="form-group">
+                            <label for="ownership">소유주체</label>
+                            <div class="select-wrapper">
+                                <select id="ownership" name="ownership" required>
+                                    <option value="">선택하세요</option>
+                                    <option value="public">공공</option>
+                                    <option value="private">민간</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 지역 -->
+                        <div class="form-group">
+                            <label for="region">지역</label>
+                            <div class="select-wrapper">
+                                <select id="region" name="region" required>
+                                    <option value="">선택하세요</option>
+                                    <optgroup label="특별시">
+                                        <option value="서울특별시">서울특별시</option>
+                                    </optgroup>
+                                    <optgroup label="광역시">
+                                        <option value="부산광역시">부산광역시</option>
+                                        <option value="대구광역시">대구광역시</option>
+                                        <option value="인천광역시">인천광역시</option>
+                                        <option value="광주광역시">광주광역시</option>
+                                        <option value="대전광역시">대전광역시</option>
+                                        <option value="울산광역시">울산광역시</option>
+                                    </optgroup>
+                                    <optgroup label="특별자치시">
+                                        <option value="세종특별자치시">세종특별자치시</option>
+                                    </optgroup>
+                                    <optgroup label="도">
+                                        <option value="경기도">경기도</option>
+                                        <option value="충청북도">충청북도</option>
+                                        <option value="충청남도">충청남도</option>
+                                        <option value="전라남도">전라남도</option>
+                                        <option value="경상북도">경상북도</option>
+                                        <option value="경상남도">경상남도</option>
+                                    </optgroup>
+                                    <optgroup label="특별자치도">
+                                        <option value="강원특별자치도">강원특별자치도</option>
+                                        <option value="전북특별자치도">전북특별자치도</option>
+                                        <option value="제주특별자치도">제주특별자치도</option>
+                                    </optgroup>
+                                    <optgroup label="특정도시">
+                                        <option value="고양시">고양시 (경기도)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 서울 마곡 여부 -->
+                        <div class="form-group" id="magokGroup" style="display: none;">
+                            <label for="isMagok">마곡지구 여부</label>
+                            <div class="select-wrapper">
+                                <select id="isMagok" name="isMagok">
+                                    <option value="no">아니오</option>
+                                    <option value="yes">예 (마곡지구)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 건축행위 -->
+                        <div class="form-group">
+                            <label for="buildingAction">건축행위</label>
+                            <div class="select-wrapper">
+                                <select id="buildingAction" name="buildingAction" required>
+                                    <option value="">선택하세요</option>
+                                    <option value="신축">신축</option>
+                                    <option value="증축">증축</option>
+                                    <option value="별동증축">별동증축</option>
+                                    <option value="재축">재축</option>
+                                    <option value="개축">개축</option>
+                                    <option value="전부개축">전부 개축</option>
+                                    <option value="대수선">대수선</option>
+                                    <option value="용도변경">용도변경</option>
+                                    <option value="건축물기재내용변경">건축물 기재내용 변경</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 연면적 -->
+                        <div class="form-group">
+                            <label for="totalFloorArea">연면적 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="totalFloorArea" name="totalFloorArea" 
+                                       placeholder="예: 5000" required min="0" step="0.01">
+                                <span class="unit">㎡</span>
+                            </div>
+                        </div>
+
+                        <!-- 건축허가 시점 -->
+                        <div class="form-group">
+                            <label for="permitYear">건축허가 시점</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="permitYear" name="permitYear" 
+                                       placeholder="예: 2025" required min="2000" max="2050">
+                                <span class="unit">년</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optional Fields -->
+                    <div class="form-group-title optional-title">
+                        <span class="badge optional">선택</span>
+                        추가 정보 (해당 시 입력)
+                    </div>
+
+                    <div class="form-grid optional-fields">
+                        <!-- 세대수 -->
+                        <div class="form-group">
+                            <label for="householdCount">세대수 (공동주택)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="householdCount" name="householdCount" 
+                                       placeholder="해당 시 입력" min="0">
+                                <span class="unit">세대</span>
+                            </div>
+                        </div>
+
+                        <!-- 연간 연료 및 열 사용량 -->
+                        <div class="form-group">
+                            <label for="fuelUsage">연간 연료/열 사용량 (TOE)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="fuelUsage" name="fuelUsage" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">TOE</span>
+                            </div>
+                        </div>
+
+                        <!-- 연간 전력 사용량 -->
+                        <div class="form-group">
+                            <label for="electricUsage">연간 전력 사용량 (MWh)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="electricUsage" name="electricUsage" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">MWh</span>
+                            </div>
+                        </div>
+
+                        <!-- 지붕면적 -->
+                        <div class="form-group">
+                            <label for="roofArea">지붕면적 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="roofArea" name="roofArea" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">㎡</span>
+                            </div>
+                        </div>
+
+                        <!-- 건축면적 -->
+                        <div class="form-group">
+                            <label for="buildingArea">건축면적 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="buildingArea" name="buildingArea" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">㎡</span>
+                            </div>
+                        </div>
+
+                        <!-- 부지면적 -->
+                        <div class="form-group">
+                            <label for="siteArea">부지면적 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="siteArea" name="siteArea" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">㎡</span>
+                            </div>
+                        </div>
+
+                        <!-- 매장면적 -->
+                        <div class="form-group">
+                            <label for="storeArea">매장면적 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="storeArea" name="storeArea" 
+                                       placeholder="해당 시 입력" min="0" step="0.01">
+                                <span class="unit">㎡</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                                <rect x="9" y="3" width="6" height="4" rx="1"/>
+                                <path d="m9 14 2 2 4-4"/>
+                            </svg>
+                            법규 검토 실행
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Result Section -->
+            <section class="result-section" id="resultSection" style="display: none;">
+                <div class="section-header">
+                    <h2>
+                        <span class="section-number">02</span>
+                        검토 결과
+                    </h2>
+                    <div class="result-actions">
+                        <button class="btn-export" onclick="exportToExcel()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <path d="M12 18v-6"/>
+                                <path d="m9 15 3 3 3-3"/>
+                            </svg>
+                            Excel 다운로드
+                        </button>
+                        <button class="btn-print" onclick="printResult()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9V2h12v7"/>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                                <rect x="6" y="14" width="12" height="8"/>
+                            </svg>
+                            인쇄
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="result-summary" id="resultSummary"></div>
+
+                <!-- Result Table -->
+                <div class="result-table-wrapper">
+                    <table class="result-table" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th class="col-item">항목</th>
+                                <th class="col-basis">관련근거</th>
+                                <th class="col-content">내용</th>
+                                <th class="col-remark">비고</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <p>© 2025 친환경 법규 검토 시스템 | 법규 기준일: 2025.11.14</p>
+                <p class="disclaimer">본 검토 결과는 참고용이며, 정확한 법규 적용은 관할 기관에 확인하시기 바랍니다.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="regulations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
