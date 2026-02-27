@@ -20,7 +20,7 @@
                     </div>
                     <div class="logo-text">
                         <h1>친환경 법규 검토 시스템</h1>
-                        <p>Green Building Regulation Checker v2025.11</p>
+                        <p>Green Building Regulation Checker v2026.02</p>
                     </div>
                 </div>
                 <div class="header-actions">
@@ -107,6 +107,15 @@
                             </div>
                         </div>
 
+                        <!-- 상세지역 (열손실 권역 구분용, 특정 도 선택 시에만 표시) -->
+                        <div class="form-group" id="subRegionGroup" style="display: none;">
+                            <label for="subRegion" id="subRegionLabel">상세 지역</label>
+                            <div class="select-wrapper">
+                                <select id="subRegion" name="subRegion">
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- 서울 마곡 여부 -->
                         <div class="form-group" id="magokGroup" style="display: none;">
                             <label for="isMagok">마곡지구 여부</label>
@@ -134,6 +143,92 @@
                                     <option value="용도변경">용도변경</option>
                                     <option value="건축물기재내용변경">건축물 기재내용 변경</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- 열손실 변동 유무 (증축/용도변경/건축물기재내용변경 선택 시에만 표시) -->
+                        <div class="form-group" id="heatLossGroup" style="display: none;">
+                            <label for="heatLossChange">열손실 변동 유무</label>
+                            <div class="select-wrapper">
+                                <select id="heatLossChange" name="heatLossChange">
+                                    <option value="no">변동 없음</option>
+                                    <option value="yes">변동 있음</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 기존 건축물 연면적 1/2 이상 증축 유무 (별동증축 선택 시에만 표시) -->
+                        <div class="form-group" id="halfExpansionGroup" style="display: none;">
+                            <label for="isHalfExpansion">기존 건축물 연면적 1/2 이상 증축</label>
+                            <div class="select-wrapper">
+                                <select id="isHalfExpansion" name="isHalfExpansion">
+                                    <option value="no">아니오</option>
+                                    <option value="yes">예</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 건축물용도 -->
+                        <div class="form-group">
+                            <label for="buildingUse">건축물 용도</label>
+                            <div class="select-wrapper">
+                                <select id="buildingUse" name="buildingUse" required>
+                                    <option value="">선택하세요</option>
+                                    <optgroup label="주거시설">
+                                        <option value="단독주택">단독주택</option>
+                                        <option value="공동주택">공동주택</option>
+                                        <option value="기숙사">기숙사</option>
+                                    </optgroup>
+                                    <optgroup label="근린·문화·종교">
+                                        <option value="제1종근린생활시설">제1종 근린생활시설</option>
+                                        <option value="제2종근린생활시설">제2종 근린생활시설</option>
+                                        <option value="문화및집회시설">문화 및 집회시설</option>
+                                        <option value="종교시설">종교시설</option>
+                                    </optgroup>
+                                    <optgroup label="상업·업무">
+                                        <option value="판매시설">판매시설</option>
+                                        <option value="운수시설">운수시설</option>
+                                        <option value="업무시설">업무시설</option>
+                                        <option value="숙박시설">숙박시설</option>
+                                        <option value="위락시설">위락시설</option>
+                                    </optgroup>
+                                    <optgroup label="의료·교육·복지">
+                                        <option value="의료시설">의료시설</option>
+                                        <option value="교육연구시설">교육연구시설</option>
+                                        <option value="노유자시설">노유자시설</option>
+                                        <option value="수련시설">수련시설</option>
+                                    </optgroup>
+                                    <optgroup label="체육·관광">
+                                        <option value="운동시설">운동시설</option>
+                                        <option value="관광휴게시설">관광휴게시설</option>
+                                    </optgroup>
+                                    <optgroup label="산업·기타">
+                                        <option value="공장">공장</option>
+                                        <option value="창고시설">창고시설</option>
+                                        <option value="위험물저장및처리시설">위험물저장 및 처리시설</option>
+                                        <option value="자동차관련시설">자동차 관련시설</option>
+                                        <option value="방송통신시설">방송통신시설</option>
+                                        <option value="발전시설">발전시설</option>
+                                        <option value="자원순환관련시설">자원순환 관련시설</option>
+                                    </optgroup>
+                                    <optgroup label="공공·기타">
+                                        <option value="교정시설">교정시설</option>
+                                        <option value="묘지관련시설">묘지 관련시설</option>
+                                        <option value="장례시설">장례시설</option>
+                                        <option value="야영장시설">야영장시설</option>
+                                        <option value="오피스텔">오피스텔</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 세대수 (공동주택 선택 시에만 표시) -->
+                        <div class="form-group" id="householdGroup" style="display: none;">
+                            <label for="householdCount">세대수</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="householdCount" name="householdCount"
+                                       placeholder="세대수 입력" min="0">
+                                <span class="unit">세대</span>
                             </div>
                         </div>
 
@@ -165,16 +260,6 @@
                     </div>
 
                     <div class="form-grid optional-fields">
-                        <!-- 세대수 -->
-                        <div class="form-group">
-                            <label for="householdCount">세대수 (공동주택)</label>
-                            <div class="input-with-unit">
-                                <input type="number" id="householdCount" name="householdCount" 
-                                       placeholder="해당 시 입력" min="0">
-                                <span class="unit">세대</span>
-                            </div>
-                        </div>
-
                         <!-- 연간 연료 및 열 사용량 -->
                         <div class="form-group">
                             <label for="fuelUsage">연간 연료/열 사용량 (TOE)</label>
@@ -250,12 +335,36 @@
                 </form>
             </section>
 
+            <!-- Summary Section -->
+            <section class="summary-section" id="summarySection" style="display: none;">
+                <div class="section-header">
+                    <h2>
+                        <span class="section-number">02</span>
+                        최종 설계적용 법규사항 정리
+                    </h2>
+                </div>
+
+                <div class="summary-table-wrapper">
+                    <table class="summary-table" id="summaryTable">
+                        <thead>
+                            <tr>
+                                <th class="col-summary-item">항 목</th>
+                                <th class="col-summary-basis">법규내용 (기준)</th>
+                                <th class="col-summary-design">설 계</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
             <!-- Result Section -->
             <section class="result-section" id="resultSection" style="display: none;">
                 <div class="section-header">
                     <h2>
-                        <span class="section-number">02</span>
-                        검토 결과
+                        <span class="section-number">03</span>
+                        상세 검토 결과
                     </h2>
                     <div class="result-actions">
                         <button class="btn-export" onclick="exportToExcel()">
@@ -302,7 +411,7 @@
         <!-- Footer -->
         <footer class="main-footer">
             <div class="footer-content">
-                <p>© 2025 친환경 법규 검토 시스템 | 법규 기준일: 2025.11.14</p>
+                <p>© 2026 친환경 법규 검토 시스템 | 법규 기준일: 2026.02.12</p>
                 <p class="disclaimer">본 검토 결과는 참고용이며, 정확한 법규 적용은 관할 기관에 확인하시기 바랍니다.</p>
             </div>
         </footer>
