@@ -40,12 +40,9 @@ const SUMMARY_CONFIG = {
     },
     designStandardException: {
         summaryName: "설계기준 적용예외",
-        getDesignAction: (data, result) => {
-            if (result.detail.includes('제로에너지건축물 인증 취득')) return '제로에너지건축물 인증 취득 시 설계검토서(의무+성능지표+소요량평가서) 제출 예외 (단, 인허가 시 예비인증서 제출 필요)';
-            if (result.detail.includes('열손실의 변동이 없는')) return '설계검토서(의무+성능지표+소요량평가서) 제출 예외';
-            if (result.detail.includes('제출 대상')) return '성능지표(EPI) 제출 예외 없음 (소요량 평가서 판정기준 만족 시 제출 예외)';
-            if (result.detail.includes('성능지표(EPI)') && result.detail.includes('제출 예외')) return '성능지표(EPI) 제출 예외';
-            return '소요량 평가서 판정기준 만족 시 EPI 제출 예외';
+        getDesignAction: (data, result, context) => {
+            if (!result.applicable) return '해당없음';
+            return result.detail;
         }
     },
     thermalInsulation: {
@@ -57,7 +54,24 @@ const SUMMARY_CONFIG = {
     },
     architecturalMandatory: {
         summaryName: "건축부문 의무사항",
-        getDesignAction: () => 'EPI 건축부문 1번 0.6점 이상, 방풍구조 적용'
+        getDesignAction: (data, result) => {
+            let lines = [];
+            // ① EPI
+            if (result.detail.includes('① EPI')) {
+                lines.push('① EPI 건축부문 1번(외벽평균열관류율) 0.6점 이상 획득');
+            }
+            // ② 방풍구조
+            if (result.detail.includes('② 방풍구조')) {
+                const match = result.detail.match(/② 방풍구조: (.+?)(?=\n|$)/);
+                lines.push(match ? `② 방풍구조: ${match[1]}` : '② 방풍구조 적용');
+            }
+            // ③ 태양열취득
+            if (result.detail.includes('③ 거실')) {
+                const match = result.detail.match(/③ 거실 외피면적당 평균 태양열취득 의무사항: (.+?)(?=\n|$)/);
+                lines.push(match ? `③ 태양열취득: ${match[1]}` : '③ 태양열취득: 해당없음');
+            }
+            return lines.join('\n');
+        }
     },
     mechanicalMandatory: {
         summaryName: "기계부문 의무사항",
@@ -440,7 +454,8 @@ function getFormData() {
         roofArea: parseFloat(document.getElementById('roofArea').value) || null,
         buildingArea: parseFloat(document.getElementById('buildingArea').value) || null,
         siteArea: parseFloat(document.getElementById('siteArea').value) || null,
-        storeArea: parseFloat(document.getElementById('storeArea').value) || null
+        storeArea: parseFloat(document.getElementById('storeArea').value) || null,
+        primaryEnergy: document.getElementById('primaryEnergy').value !== '' ? parseFloat(document.getElementById('primaryEnergy').value) : null
     };
 }
 
@@ -529,7 +544,7 @@ function displaySummary(summaryItems) {
                     <div class="summary-basis-law">${item.basisLaw}</div>
                     <div class="summary-basis-criteria">${item.basisCriteria}</div>
                 </td>
-                <td class="col-summary-design">${item.designAction}</td>
+                <td class="col-summary-design">${item.designAction.replace(/\n/g, '<br>')}</td>
             </tr>
         `;
     });

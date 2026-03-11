@@ -500,8 +500,8 @@ const REGULATIONS = {
             // 설계검토서 제출 예외 여부 먼저 판정 (설계검토서 = 의무+성능지표+소요량평가서)
             let isReportExempt = false;
 
-            // 1) ZEB 인증 취득 시 설계검토서 제출 예외
-            if (zeb && zeb.applicable) {
+            // 1) ZEB 인증 취득 시 설계검토서 제출 예외 (공공만 인증 의무, 민간은 인증 수준이므로 제외)
+            if (zeb && zeb.applicable && data.ownership === 'public') {
                 return {
                     applicable: true,
                     detail: '제로에너지건축물 인증 취득 시 설계검토서(의무+성능지표+소요량평가서) 제출 예외 (단, 인허가 시 예비인증서 제출 필요)'
@@ -528,11 +528,26 @@ const REGULATIONS = {
             }
 
             // ② 성능지표(EPI) 제출 여부
+            const isPublic = data.ownership === 'public';
+            const energyThreshold = isPublic ? 130 : (data.totalFloorArea < 1000 ? 200 : 150);
+
             if (data.buildingAction === '별동증축') {
-                details.push('② 성능지표(EPI): 별동증축 → 제출 대상');
+                if (data.primaryEnergy !== null && data.primaryEnergy < energyThreshold) {
+                    details.push(`② 성능지표(EPI): 제출 예외 (소요량 평가서 판정기준 만족: ${data.primaryEnergy}kWh/㎡ < ${energyThreshold}kWh/㎡)`);
+                } else if (data.primaryEnergy !== null && data.primaryEnergy >= energyThreshold) {
+                    details.push(`② 성능지표(EPI): 별동증축 → 제출 대상 (${data.primaryEnergy}kWh/㎡ ≥ ${energyThreshold}kWh/㎡)`);
+                } else {
+                    details.push(`② 성능지표(EPI): 별동증축 → 제출 대상 (소요량 평가서 판정기준 만족 시 제출 예외: ${energyThreshold}kWh/㎡ 미만)`);
+                }
             } else if (data.buildingAction === '증축') {
                 if (data.isHalfExpansion === 'yes' && data.expansionArea && data.expansionArea >= 2000) {
-                    details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축 + 증축 연면적 ${data.expansionArea.toLocaleString()}㎡ ≥ 2,000㎡ → 제출 대상`);
+                    if (data.primaryEnergy !== null && data.primaryEnergy < energyThreshold) {
+                        details.push(`② 성능지표(EPI): 제출 예외 (소요량 평가서 판정기준 만족: ${data.primaryEnergy}kWh/㎡ < ${energyThreshold}kWh/㎡)`);
+                    } else if (data.primaryEnergy !== null && data.primaryEnergy >= energyThreshold) {
+                        details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축 + 증축 연면적 ${data.expansionArea.toLocaleString()}㎡ ≥ 2,000㎡ → 제출 대상 (${data.primaryEnergy}kWh/㎡ ≥ ${energyThreshold}kWh/㎡)`);
+                    } else {
+                        details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축 + 증축 연면적 ${data.expansionArea.toLocaleString()}㎡ ≥ 2,000㎡ → 제출 대상 (소요량 평가서 판정기준 만족 시 제출 예외: ${energyThreshold}kWh/㎡ 미만)`);
+                    }
                 } else if (data.isHalfExpansion === 'yes') {
                     details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축하고 증축 연면적 ${data.expansionArea ? data.expansionArea.toLocaleString() + '㎡' : '미입력'} < 2,000㎡ → 제출 예외`);
                 } else {
@@ -541,9 +556,13 @@ const REGULATIONS = {
             } else if (['용도변경', '건축물기재내용변경'].includes(data.buildingAction)) {
                 details.push(`② 성능지표(EPI): ${data.buildingAction} → 제출 예외`);
             } else {
-                const isPublic = data.ownership === 'public';
-                const energyThreshold = isPublic ? 130 : (data.totalFloorArea < 1000 ? 200 : 150);
-                details.push(`② 성능지표(EPI): 소요량 평가서 판정기준 만족 시 제출 예외 (1차 에너지소요량 합계 ${energyThreshold}kWh/㎡년 미만)`);
+                if (data.primaryEnergy !== null && data.primaryEnergy < energyThreshold) {
+                    details.push(`② 성능지표(EPI): 제출 예외 (1차 에너지소요량 합계 ${data.primaryEnergy}kWh/㎡ < ${energyThreshold}kWh/㎡)`);
+                } else if (data.primaryEnergy !== null && data.primaryEnergy >= energyThreshold) {
+                    details.push(`② 성능지표(EPI): 제출 대상 (1차 에너지소요량 합계 ${data.primaryEnergy}kWh/㎡ ≥ ${energyThreshold}kWh/㎡)`);
+                } else {
+                    details.push(`② 성능지표(EPI): 소요량 평가서 판정기준 만족 시 제출 예외 (1차 에너지소요량 합계 ${energyThreshold}kWh/㎡년 미만)`);
+                }
             }
 
             return {
@@ -580,7 +599,7 @@ const REGULATIONS = {
                 const locationText = data.subRegion ? `${data.region} ${data.subRegion}` : data.region;
                 return {
                     applicable: true,
-                    detail: `${locationText} → ${thermalZone}에 해당. ${thermalZone} 기준 열관류율 적용 필요. 열손실방지조치는 최소 기준이며, EPI 점수와 연계해 성능 향상 필요. ※창고·차고·기계실 등 비냉난방 공간, 외기 개방 공간은 예외`
+                    detail: `${locationText} → ${thermalZone}에 해당. ${thermalZone} 기준 열관류율 적용 필요. 열손실방지조치는 최소 기준이며, EPI 점수와 연계해 성능 향상 필요.\n※창고·차고·기계실 등 비냉난방 공간, 외기 개방 공간은 예외`
                 };
             }
             return { applicable: false, detail: `${data.buildingAction}은 열손실 방지조치 대상 아님` };
@@ -592,7 +611,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "건축부문 의무사항",
         basis: "고시 제6조",
-        content: "에너지절약계획서 및 설계검토서 제출대상 건축물:\n① EPI 건축부문 1번(외벽평균열관류율) 0.6점 이상 획득\n② 방풍구조 적용 필요 (예외: 사람의 통행을 주목적으로 하지 않는 출입문, 너비 1.2m 이하)\n③ 공공 3,000㎡ 이상 업무/교육연구시설 → 거실 외피면적당 평균 태양열취득 0.6점 이상",
+        content: "에너지절약계획서 및 설계검토서 제출대상 건축물:\n① EPI 건축부문 1번(외벽평균열관류율) 0.6점 이상 획득\n② 방풍구조: 출입구(외기에 직접 면하고 1층 또는 지상으로 연결되는 출입문) 방풍구조 설치 대상\n  예외: 사람의 통행을 주목적으로 하지 않는 출입문, 너비 1.2m 이하, 바닥면적 300㎡ 이하 개별점포, 주택(공동주택 포함, 기숙사 제외)\n③ 거실 외피면적당 평균 태양열취득 의무사항:\n  대상: 공공건축물 연면적 3,000㎡ 이상의 업무시설 또는 교육연구시설(영 제10조의2)을 건축 또는 리모델링하는 경우\n  적용: 에너지성능지표의 건축부문 7번 항목 배점 0.6점 이상 획득\n  예외: 제로에너지건축물 인증 취득 시, 에너지소요량 평가서 1차 에너지소요량 합계 130kWh/㎡ 미만 시",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             if (!esp || !esp.applicable) {
@@ -602,11 +621,14 @@ const REGULATIONS = {
             let details = [];
             details.push('① EPI 의무: 건축부문 1번 항목(외벽평균열관류율) 0.6점 이상 획득');
 
-            // 방풍구조: 공동주택 해당없음, 그 외 적용 + 예외 안내
-            if (data.buildingUse === '공동주택') {
-                details.push('② 방풍구조: 해당없음 (공동주택)');
+            // 방풍구조: 주택(공동주택 포함, 기숙사 제외) 예외, 그 외 적용
+            const windbreakExemptUses = ['단독주택', '공동주택', '오피스텔'];
+            if (windbreakExemptUses.includes(data.buildingUse)) {
+                details.push(`② 방풍구조: 해당없음 (주택 - ${data.buildingUse})`);
+            } else if (data.buildingUse === '기숙사') {
+                details.push('② 방풍구조: 출입구(외기에 직접 면하고 1층 또는 지상으로 연결되는 출입문) 방풍구조 적용 필요(기숙사는 예외 조건 없음)');
             } else {
-                details.push('② 방풍구조: 출입구 방풍구조 적용 필요 (예외: 사람의 통행을 주목적으로 하지 않는 출입문, 너비 1.2m 이하의 출입문)');
+                details.push('② 방풍구조: 출입구(외기에 직접 면하고 1층 또는 지상으로 연결되는 출입문) 방풍구조 적용 필요');
             }
 
             // 태양열취득: 공공 3,000㎡ 이상 업무/교육연구시설 여부에 따라 표시
@@ -615,15 +637,16 @@ const REGULATIONS = {
 
             if (isSolarTarget) {
                 const zeb = context.zeroEnergyCertification;
-                const energyThreshold = data.ownership === 'public' ? 130 : (data.totalFloorArea < 1000 ? 200 : 150);
 
-                if (zeb && zeb.applicable) {
-                    details.push(`③ 태양열취득: 제로에너지건축물 인증 취득 시 적용예외`);
+                if (data.primaryEnergy !== null && data.primaryEnergy < 130) {
+                    details.push(`③ 거실 외피면적당 평균 태양열취득 의무사항: 해당없음 (1차 에너지소요량 합계 ${data.primaryEnergy}kWh/㎡ < 130kWh/㎡)`);
+                } else if (zeb && zeb.applicable) {
+                    details.push('③ 거실 외피면적당 평균 태양열취득 의무사항: 해당, 7번 항목 배점 0.6점 이상 획득 (적용예외: 제로에너지건축물 인증 취득)');
                 } else {
-                    details.push(`③ 태양열취득: 공공 ${data.buildingUse} ${data.totalFloorArea.toLocaleString()}㎡ ≥ 3,000㎡ → 거실 외피면적당 평균 태양열취득 0.6점 이상 (소요량 평가서 판정기준 만족 시(1차 에너지소요량 합계 ${energyThreshold}kWh/㎡년 미만) 적용예외)`);
+                    details.push('③ 거실 외피면적당 평균 태양열취득 의무사항: 해당, 7번 항목 배점 0.6점 이상 획득 (예외: ZEB 인증 취득 시, 에너지소요량 1차 에너지 합계 130kWh/㎡ 미만 시)');
                 }
             } else {
-                details.push('③ 태양열취득: 해당없음 (공공 업무/교육연구시설 연면적 3,000㎡ 이상만 대상)');
+                details.push('③ 거실 외피면적당 평균 태양열취득 의무사항: 해당없음');
             }
 
             return {
@@ -752,7 +775,22 @@ const REGULATIONS = {
 
             const targetUses = ['업무시설', '교육연구시설'];
             if (targetUses.includes(data.buildingUse) && data.totalFloorArea >= 3000) {
-                const kwhLimit = data.ownership === 'public' ? '130kWh/㎡·yr' : '150kWh/㎡·yr (1천㎡ 미만 200kWh/㎡·yr)';
+                const isPublic = data.ownership === 'public';
+                const kwhNum = isPublic ? 130 : (data.totalFloorArea < 1000 ? 200 : 150);
+                const kwhLimit = isPublic ? '130kWh/㎡·yr' : '150kWh/㎡·yr (1천㎡ 미만 200kWh/㎡·yr)';
+
+                if (data.primaryEnergy !== null && data.primaryEnergy < kwhNum) {
+                    return {
+                        applicable: true,
+                        detail: `${data.buildingUse} 연면적 ${data.totalFloorArea.toLocaleString()}㎡ ≥ 3,000㎡ → 판정기준 적합 (1차 에너지소요량 합계 ${data.primaryEnergy}kWh/㎡ < ${kwhNum}kWh/㎡)`
+                    };
+                } else if (data.primaryEnergy !== null && data.primaryEnergy >= kwhNum) {
+                    return {
+                        applicable: true,
+                        detail: `${data.buildingUse} 연면적 ${data.totalFloorArea.toLocaleString()}㎡ ≥ 3,000㎡ → 판정기준 부적합 (1차 에너지소요량 합계 ${data.primaryEnergy}kWh/㎡ ≥ ${kwhNum}kWh/㎡). 설계 개선 필요`
+                    };
+                }
+
                 return {
                     applicable: true,
                     detail: `${data.buildingUse} 연면적 ${data.totalFloorArea.toLocaleString()}㎡ ≥ 3,000㎡ → 단위면적당 1차 에너지소요량 ${kwhLimit} 미만. ECO2-OD 시뮬레이션 필요`
