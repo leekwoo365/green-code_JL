@@ -157,7 +157,7 @@
                             </div>
                         </div>
 
-                        <!-- 기존 건축물 연면적 1/2 이상 증축 유무 (별동증축 선택 시에만 표시) -->
+                        <!-- 기존 건축물 연면적 1/2 이상 증축 유무 (증축 선택 시에만 표시) -->
                         <div class="form-group" id="halfExpansionGroup" style="display: none;">
                             <label for="isHalfExpansion">기존 건축물 연면적 1/2 이상 증축</label>
                             <div class="select-wrapper">
@@ -165,6 +165,16 @@
                                     <option value="no">아니오</option>
                                     <option value="yes">예</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- 증축 연면적 합계 (1/2 이상 증축 시에만 표시) -->
+                        <div class="form-group" id="expansionAreaGroup" style="display: none;">
+                            <label for="expansionArea">증축 연면적 합계 (㎡)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="expansionArea" name="expansionArea"
+                                       placeholder="증축 부분 연면적" min="0" step="0.01">
+                                <span class="unit">㎡</span>
                             </div>
                         </div>
 

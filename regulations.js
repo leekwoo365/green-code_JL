@@ -287,7 +287,7 @@ const REGULATIONS = {
         category: "녹색건축물 조성 지원법",
         item: "에너지절약계획서 제출",
         basis: "법 제14조, 영 제10조, 규칙 제7조, 고시 제3조",
-        content: "건축허가를 신청(대수선 제외), 용도변경의 허가신청 또는 신고, 건축물대장 기재내용의 변경을 신청하는 경우 에너지 절약계획서 제출. 제출대상: 연면적 합계 500㎡ 이상인 건축물",
+        content: "건축허가를 신청(대수선 제외), 용도변경의 허가신청 또는 신고, 건축물대장 기재내용의 변경을 신청하는 경우 에너지 절약계획서 제출\n제출대상: 연면적 합계 500㎡ 이상인 건축물",
         check: (data, context) => {
             if (data.buildingAction === '대수선') {
                 return { applicable: false, detail: "대수선은 제출 제외" };
@@ -311,7 +311,7 @@ const REGULATIONS = {
         category: "녹색건축물 조성 지원법",
         item: "녹색건축 인증",
         basis: "법 제16조, 영 제11조의3",
-        content: "공공기관이 신축·재축 또는 증축(별동 증축에 한함)하는 건축물로 연면적 3,000㎡ 이상 에너지절약계획서 제출 대상 건축물은 녹색건축 인증 대상",
+        content: "공공기관이 신축·재축 또는 증축(별동 증축에 한함)하는 건축물\n연면적 3,000㎡ 이상 에너지절약계획서 제출 대상 건축물은 녹색건축 인증 대상",
         check: (data, context) => {
             // 에너지절약계획서 제출대상이어야 함
             const esp = context.energySavingPlan;
@@ -341,7 +341,7 @@ const REGULATIONS = {
         category: "녹색건축물 조성 지원법",
         item: "제로에너지건축물 인증",
         basis: "법 제17조, 영 제12조, 영 별표1, 규칙 제9조",
-        content: "대통령령으로 정하는 건축물을 건축 또는 리모델링하려는 건축주는 제로에너지건축물 인증등급 이상을 받아야 함",
+        content: "대통령령으로 정하는 건축물을 건축 또는 리모델링하려는 건축주는 제로에너지건축물 인증등급 이상을 받아야 함\n공공: 500㎡ 이상 → 5등급(1,000㎡ 이상 4등급 용도 해당 시 4등급)\n민간: 1,000㎡ 이상 → 5등급 수준 설계\n공동주택: 30세대 이상",
         check: (data, context) => {
             const targetActions = ['신축', '재축', '별동증축', '전부개축'];
             if (!targetActions.includes(data.buildingAction)) {
@@ -431,7 +431,7 @@ const REGULATIONS = {
         category: "녹색건축물 조성 지원법",
         item: "차양 등의 설치",
         basis: "법 제14조의2, 영 제10조의2, 규칙 제7조의2",
-        content: "공공기관의 장이 소유 또는 관리하는 건축물로서 연면적 3,000㎡ 이상의 업무시설 또는 교육연구시설에 외벽에 창을 설치하거나 유리 등의 건축재료로 하는 경우 차양 등의 일사조절장치 설치",
+        content: "공공기관의 장이 소유 또는 관리하는 건축물\n연면적 3,000㎡ 이상의 업무시설 또는 교육연구시설\n외벽에 창을 설치하거나 유리 등의 건축재료로 하는 경우 차양 등의 일사조절장치 설치",
         check: (data, context) => {
             if (data.ownership !== 'public') {
                 return { applicable: false, detail: "민간 건축물" };
@@ -459,7 +459,7 @@ const REGULATIONS = {
         category: "녹색건축 인증에 관한 규칙",
         item: "녹색건축 인증 의무 대상",
         basis: "기준 제7조, 규칙 제2조, 규칙 제6조, 규칙 제9조, 규칙 제11조, 세칙 제6조",
-        content: "인증신청: 건축주·건축물소유자·사업주체·시공자 신청 가능, 별동 증축 인증대상 가능, 여러 동은 사업승인 또는 건축허가 단위로 신청 가능. 인증 유효기한: 인증서 발급일로부터 5년. 유효기한 연장: 만료일 180일 전부터 연장 신청 가능. 예비인증: 발급일부터 사용승인일 또는 사용검사일까지 유효",
+        content: "인증신청: 건축주·건축물소유자·사업주체·시공자 신청 가능, 별동 증축 인증대상 가능, 여러 동은 사업승인 또는 건축허가 단위로 신청 가능\n인증 유효기한: 인증서 발급일로부터 5년\n유효기한 연장: 만료일 180일 전부터 연장 신청 가능\n예비인증: 발급일부터 사용승인일 또는 사용검사일까지 유효",
         check: (data, context) => {
             const gc = context.greenBuildingCertification;
             if (gc && gc.applicable) {
@@ -488,7 +488,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "설계기준 적용예외",
         basis: "고시 제4조",
-        content: "■에너지절약계획 설계 검토서(의무+성능지표+소요량평가서) 제출 예외 대상: ①제로에너지건축물 인증을 취득한 경우 (단, 인허가 시 예비인증서 제출 필요), ②열손실의 변동이 없는 증축, 용도변경 및 건축물대장기재내용 변경의 경우. ■성능지표(EPI) 제출 예외 대상: ①증축, 용도변경, 건축물대장기재내용을 변경하는 경우 (단, 별동증축·기존 건축물 연면적 1/2 이상 증축하면서 해당 증축 연면적 합계가 2,000㎡ 이상의 경우 성능지표 제출), ②제21조 제2항에서 제시하는 소요량 평가서 판정기준을 만족하는 경우 (1차 에너지소요량 합계 민간 150kWh/㎡년 미만(연면적 합계 1천㎡ 미만은 200kWh/㎡년 미만), 공공 130kWh/㎡년 미만)",
+        content: "■ 설계 검토서(의무+성능지표+소요량평가서) 제출 예외 대상:\n① 제로에너지건축물 인증을 취득한 경우 (단, 인허가 시 예비인증서 제출 필요)\n② 열손실의 변동이 없는 증축, 용도변경 및 건축물대장기재내용 변경의 경우\n\n■ 성능지표(EPI) 제출 예외 대상:\n① 증축, 용도변경, 건축물대장기재내용을 변경하는 경우\n  (단, 별동증축·기존 연면적 1/2 이상 증축 + 증축 연면적 2,000㎡ 이상은 제출)\n② 소요량 평가서 판정기준 만족 시\n  (민간 150kWh/㎡년 미만, 1천㎡ 미만 200kWh/㎡년 미만, 공공 130kWh/㎡년 미만)",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             const zeb = context.zeroEnergyCertification;
@@ -497,44 +497,58 @@ const REGULATIONS = {
                 return { applicable: false, detail: "에너지절약계획서 제출대상 아님" };
             }
 
-            let exceptions = [];
+            // 설계검토서 제출 예외 여부 먼저 판정 (설계검토서 = 의무+성능지표+소요량평가서)
+            let isReportExempt = false;
 
             // 1) ZEB 인증 취득 시 설계검토서 제출 예외
             if (zeb && zeb.applicable) {
-                exceptions.push('제로에너지건축물 인증 취득 시 설계검토서 제출 예외 (단, 인허가 시 예비인증서 제출 필요)');
+                return {
+                    applicable: true,
+                    detail: '제로에너지건축물 인증 취득 시 설계검토서(의무+성능지표+소요량평가서) 제출 예외 (단, 인허가 시 예비인증서 제출 필요)'
+                };
             }
 
-            // 2) 증축/용도변경/건축물기재내용변경 → 열손실 변동 유무에 따라 분기
+            // 2) 열손실 변동 없는 증축/용도변경/건축물기재내용변경 → 설계검토서 전체 예외
             const exemptActions = ['증축', '용도변경', '건축물기재내용변경'];
-            if (exemptActions.includes(data.buildingAction)) {
-                if (data.heatLossChange === 'no') {
-                    exceptions.push('열손실의 변동이 없는 증축, 용도변경 및 건축물대장기재내용 변경 → 설계검토서(의무+성능지표+소요량평가서) 제출 예외');
-                } else {
-                    exceptions.push('열손실의 변동이 있는 경우 → 설계검토서 제출 필요. 성능지표(EPI) 제출 예외 대상');
-                }
+            if (exemptActions.includes(data.buildingAction) && data.heatLossChange === 'no') {
+                return {
+                    applicable: true,
+                    detail: '열손실의 변동이 없는 증축, 용도변경 및 건축물대장기재내용 변경 → 설계검토서(의무+성능지표+소요량평가서) 제출 예외'
+                };
             }
 
-            // 3) 별동증축 → 기존 건축물 연면적 1/2 이상 증축 + 증축 연면적 2,000㎡ 이상 시 예외없음
+            // 설계검토서 예외가 아닌 경우 → ① 설계검토서 + ② 성능지표 분리 표시
+            let details = [];
+
+            // ① 설계검토서 제출 여부
+            if (exemptActions.includes(data.buildingAction) && data.heatLossChange === 'yes') {
+                details.push('① 설계검토서: 열손실의 변동이 있는 경우 → 제출 필요');
+            } else {
+                details.push('① 설계검토서: 제출 필요');
+            }
+
+            // ② 성능지표(EPI) 제출 여부
             if (data.buildingAction === '별동증축') {
-                if (data.isHalfExpansion === 'yes' && data.totalFloorArea >= 2000) {
-                    exceptions.push(`기존 건축물 연면적 1/2 이상 별동증축, 증축 연면적 ${data.totalFloorArea.toLocaleString()}㎡ ≥ 2,000㎡ → 예외없음`);
+                details.push('② 성능지표(EPI): 별동증축 → 제출 대상');
+            } else if (data.buildingAction === '증축') {
+                if (data.isHalfExpansion === 'yes' && data.expansionArea && data.expansionArea >= 2000) {
+                    details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축 + 증축 연면적 ${data.expansionArea.toLocaleString()}㎡ ≥ 2,000㎡ → 제출 대상`);
                 } else if (data.isHalfExpansion === 'yes') {
-                    exceptions.push(`기존 건축물 연면적 1/2 이상 별동증축이나 증축 연면적 ${data.totalFloorArea.toLocaleString()}㎡ < 2,000㎡ → 성능지표(EPI) 제출 예외`);
+                    details.push(`② 성능지표(EPI): 기존 연면적 1/2 이상 증축하고 증축 연면적 ${data.expansionArea ? data.expansionArea.toLocaleString() + '㎡' : '미입력'} < 2,000㎡ → 제출 예외`);
                 } else {
-                    exceptions.push('기존 건축물 연면적 1/2 미만 별동증축 → 성능지표(EPI) 제출 예외');
+                    details.push('② 성능지표(EPI): 증축 (기존 연면적 1/2 미만) → 제출 예외');
                 }
-            }
-
-            // 4) 위 조건에 해당하지 않을 때만 소요량 평가서 기준 표시
-            if (exceptions.length === 0) {
+            } else if (['용도변경', '건축물기재내용변경'].includes(data.buildingAction)) {
+                details.push(`② 성능지표(EPI): ${data.buildingAction} → 제출 예외`);
+            } else {
                 const isPublic = data.ownership === 'public';
                 const energyThreshold = isPublic ? 130 : (data.totalFloorArea < 1000 ? 200 : 150);
-                exceptions.push(`소요량 평가서 판정기준 만족 시 성능지표(EPI) 제출 예외 대상 (1차 에너지소요량 합계 ${energyThreshold}kWh/㎡년 미만)`);
+                details.push(`② 성능지표(EPI): 소요량 평가서 판정기준 만족 시 제출 예외 (1차 에너지소요량 합계 ${energyThreshold}kWh/㎡년 미만)`);
             }
 
             return {
                 applicable: true,
-                detail: exceptions.join('. ')
+                detail: details.join('\n')
             };
         }
     },
@@ -544,7 +558,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "열손실 방지조치",
         basis: "고시 제2조, 제6조, 별표1, 별표3",
-        content: "건축물을 건축(신축, 증축, 개축, 재축, 이전), 대수선, 용도변경 시 부위별 열관류율 기준 준수 (중부1/중부2/남부/제주 4개 권역). ■예외: ①열손실 변동이 없는 증축·대수선·용도변경·건축물대장기재내용 변경 ②창고·차고·기계실 등 거실 용도 아닌 비냉난방 공간 ③외기 개방 등 열손실 방지조치 효과 없는 공간 ④발전시설 중 원자력안전법에 따른 허가 건축물(단, 발전소 내 사무동은 대상 포함)",
+        content: "건축물을 건축(신축, 증축, 개축, 재축, 이전), 대수선, 용도변경 시 부위별 열관류율 기준 준수\n중부1/중부2/남부/제주 4개 권역별 기준 적용\n\n■ 예외:\n① 열손실 변동이 없는 증축·대수선·용도변경·건축물대장기재내용 변경\n② 창고·차고·기계실 등 거실 용도 아닌 비냉난방 공간\n③ 외기 개방 등 열손실 방지조치 효과 없는 공간\n④ 발전시설 중 원자력안전법에 따른 허가 건축물 (단, 발전소 내 사무동은 대상 포함)",
         check: (data, context) => {
             // 열손실 변동이 없는 증축/대수선/용도변경/건축물대장기재내용변경은 예외
             const heatLossExemptActions = ['증축', '대수선', '용도변경', '건축물기재내용변경'];
@@ -578,7 +592,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "건축부문 의무사항",
         basis: "고시 제6조",
-        content: "에너지절약계획서 및 설계검토서 제출대상 건축물은 EPI 건축부문 1번(외벽평균열관류율) 0.6점 이상 획득 및 방풍구조 적용 필요. 공공건축물 연면적 3,000㎡ 이상 업무/교육연구시설은 거실 외피면적당 평균 태양열취득 0.6점 이상",
+        content: "에너지절약계획서 및 설계검토서 제출대상 건축물:\n① EPI 건축부문 1번(외벽평균열관류율) 0.6점 이상 획득\n② 방풍구조 적용 필요 (예외: 사람의 통행을 주목적으로 하지 않는 출입문, 너비 1.2m 이하)\n③ 공공 3,000㎡ 이상 업무/교육연구시설 → 거실 외피면적당 평균 태양열취득 0.6점 이상",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             if (!esp || !esp.applicable) {
@@ -624,7 +638,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "기계부문 의무사항",
         basis: "고시 제8조",
-        content: "에너지절약계획서 제출대상 건축물의 비전기식 냉방방식 설치, 고효율 냉난방설비 의무 적용, 전자식 원격검침계량기 설치 등",
+        content: "에너지절약계획서 제출대상 건축물:\n• 비전기식 냉방방식 설치\n• 고효율 냉난방설비 의무 적용\n• 전자식 원격검침계량기 설치 등",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             if (!esp || !esp.applicable) {
@@ -667,7 +681,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "전기부문 의무사항",
         basis: "고시 제10조",
-        content: "BEMS 구축, LED 조명기기 적용, ESS 설치 등 전기부문 의무사항",
+        content: "전기부문 의무사항:\n• BEMS 구축\n• LED 조명기기 적용\n• ESS 설치 등",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             if (!esp || !esp.applicable) {
@@ -685,7 +699,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "에너지성능지표(EPI)",
         basis: "고시 제15조",
-        content: "EPI 평점합계 65점 이상 적합, 공공기관 신축(별동증축 포함) 74점 이상. 연면적 합계 1,000㎡ 이상 신축·재축·전부개축·별동증축 시 EPI 의무적용",
+        content: "EPI 평점합계 65점 이상 적합\n공공기관 신축(별동증축 포함) 74점 이상\n연면적 합계 1,000㎡ 이상 신축·재축·전부개축·별동증축 시 EPI 의무적용",
         check: (data, context) => {
             const dse = context.designStandardException;
 
@@ -724,7 +738,7 @@ const REGULATIONS = {
         category: "건축물의 에너지절약 설계기준",
         item: "에너지소요량 평가서 제출",
         basis: "고시 제21조",
-        content: "신축 또는 별동으로서 연면적 합계가 3,000㎡ 이상의 업무시설, 교육연구시설은 에너지소요량 평가서 제출",
+        content: "신축 또는 별동으로서 연면적 합계 3,000㎡ 이상\n업무시설, 교육연구시설은 에너지소요량 평가서 제출\nECO2-OD 시뮬레이션 필요",
         check: (data, context) => {
             const esp = context.energySavingPlan;
             if (!esp || !esp.applicable) {
@@ -757,7 +771,7 @@ const REGULATIONS = {
         category: "신에너지 및 재생에너지 개발·이용·보급 촉진법",
         item: "신재생에너지 설비 설치 의무",
         basis: "법 제12조, 영 제15조~17조, 영 별표2",
-        content: "설치의무기관이 신축·증축 또는 개축하는 연면적 1,000㎡ 이상 건축물에 예상 에너지사용량의 일정 비율 이상 신재생에너지 설비 설치",
+        content: "설치의무기관이 신축·증축 또는 개축하는 연면적 1,000㎡ 이상 건축물\n예상 에너지사용량의 일정 비율 이상 신재생에너지 설비 설치\n연도별 비율: '24~'25: 34% → '26~'27: 36% → '28~'29: 38% → '30~: 40%",
         check: (data, context) => {
             const zeb = context.zeroEnergyCertification;
 
@@ -799,7 +813,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "제로에너지건축물 의무취득",
         basis: "규정 제6조, 규칙 제2조, 기준 별표1",
-        content: "공공기관 중 에너지절약계획서 또는 친환경주택 에너지절약계획서 제출대상이며 연면적 500㎡ 이상 신축, 재축, 별동 증축하는 건축물 (공동주택 30세대 이상, 기숙사 제외)",
+        content: "공공기관 중 에너지절약계획서 또는 친환경주택 에너지절약계획서 제출대상\n연면적 500㎡ 이상 신축, 재축, 별동 증축하는 건축물\n공동주택 30세대 이상, 기숙사 제외",
         check: (data, context) => {
             if (data.ownership !== 'public') {
                 return { applicable: false, detail: "민간 건축물" };
@@ -830,7 +844,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "BEMS 구축",
         basis: "규정 제6조",
-        content: "공공기관에서 에너지절약계획서 제출대상 중 연면적 10,000㎡ 이상 건축물의 신축, 별동증축하는 경우 건물에너지관리시스템(BEMS) 구축·운영",
+        content: "공공기관에서 에너지절약계획서 제출대상 중\n연면적 10,000㎡ 이상 건축물의 신축, 별동증축하는 경우\n건물에너지관리시스템(BEMS) 구축·운영\n제외: 공동주택, 기숙사, 오피스텔, 공장, 자원순환시설, 발전시설",
         check: (data, context) => {
             const targetActions = ['신축', '별동증축'];
             if (data.ownership !== 'public') {
@@ -858,7 +872,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "비전기식 냉방방식",
         basis: "규정 제10조",
-        content: "공공기관 연면적 1,000㎡ 이상 건축물을 신축·증축하는 경우 냉방설비 전면 개체시 비전기식 냉방방식(축열식 전기 냉방, 가스 및 유류이용 냉방 등) 60% 이상 설치",
+        content: "공공기관 연면적 1,000㎡ 이상 건축물을 신축·증축하는 경우\n냉방설비 전면 교체 시 비전기식 냉방방식 60% 이상 설치\n(축열식 전기 냉방, 가스 및 유류이용 냉방 등)\n제외: 공동주택, 기숙사",
         check: (data, context) => {
             const targetActions = ['신축', '증축', '별동증축'];
             if (data.ownership !== 'public') {
@@ -890,7 +904,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "고효율에너지기자재 사용 (LED·ESS)",
         basis: "규정 제11조",
-        content: "공공기관 소유 건축물의 실내 및 주차장 조명기기를 LED제품으로 100% 적용, 계약전력 2,000kW 이상 건축물에 계약전력 5% 이상 ESS 설치",
+        content: "공공기관 소유 건축물:\n• 실내 및 주차장 조명기기 LED제품 100% 적용\n• 계약전력 2,000kW 이상 건축물에 계약전력 5% 이상 ESS 설치\n  (임대·임차 건축물, 발전시설 등 제외)",
         check: (data, context) => {
             if (data.ownership !== 'public') {
                 return { applicable: false, detail: "민간 건축물" };
@@ -909,7 +923,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "옥외 경관조명 LED 조명 사용",
         basis: "규정 제12조",
-        content: "건축물 미관이나 조형물, 수목, 상징물 등을 위하여 옥외 경관조명을 설치 불가. 다만 특별한 사유에 의해 설치하는 경우에는 반드시 LED 조명 사용",
+        content: "건축물 미관이나 조형물, 수목, 상징물 등을 위하여 옥외 경관조명 설치 불가\n특별한 사유에 의해 설치하는 경우 반드시 LED 조명 사용\n홍보광고판 등 심야(23:00~익일 일출 시) 소등 필요",
         check: (data, context) => {
             if (data.ownership !== 'public') {
                 return { applicable: false, detail: "민간 건축물" };
@@ -926,7 +940,7 @@ const REGULATIONS = {
         category: "공공기관 에너지이용 합리화 추진에 관한 규정",
         item: "친환경 자동차 전용주차구역",
         basis: "규정 제16조",
-        content: "공공기관 청사주차장(50대 이상)에 경차 및 환경친화적 자동차 전용 주차면 10% 이상 설치",
+        content: "공공기관 청사주차장(50대 이상)\n경차 및 환경친화적 자동차 전용 주차면 10% 이상 설치\n주차장 바닥 면에 '경차', '환경친화적 자동차' 등 표시",
         check: (data, context) => {
             if (data.ownership !== 'public') {
                 return { applicable: false, detail: "민간 건축물" };
@@ -947,7 +961,7 @@ const REGULATIONS = {
         category: "에너지이용 합리화법",
         item: "에너지사용계획서 제출",
         basis: "법 제10조, 영 제20조",
-        content: "공공: 연간 2,500TOE 이상 연료/열 또는 연간 10,000MWh 이상 전력 사용 시설. 민간: 연간 5,000TOE 이상 연료/열 또는 연간 20,000MWh 이상 전력 사용 시설",
+        content: "공공: 연간 2,500TOE 이상 연료/열 또는 연간 10,000MWh 이상 전력 사용 시설\n민간: 연간 5,000TOE 이상 연료/열 또는 연간 20,000MWh 이상 전력 사용 시설",
         check: (data, context) => {
             if (data.ownership === 'public') {
                 if ((data.fuelUsage && data.fuelUsage >= 2500) || (data.electricUsage && data.electricUsage >= 10000)) {
@@ -977,7 +991,7 @@ const REGULATIONS = {
         category: "분산에너지 활성화 특별법",
         item: "분산에너지 설비 설치계획서 제출",
         basis: "법 제13조, 영 제10조",
-        content: "연간 20만MWh 이상 에너지 사용이 예상되는 건축물 또는 사업면적이 100만㎡ 이상인 사업 시행자. 수도권(서울·인천·경기) 100%, 비수도권 0%",
+        content: "연간 20만MWh 이상 에너지 사용이 예상되는 건축물\n또는 사업면적이 100만㎡ 이상인 사업 시행자\n수도권(서울·인천·경기) 100%, 비수도권 0%\n면제: 의료시설, 교육연구시설, 노유자시설, 발전시설, 국방군사시설",
         check: (data, context) => {
             // 연간 20만MWh 이상 사용 예상 건축물
             if (data.electricUsage && data.electricUsage >= 200000) {
@@ -1000,7 +1014,7 @@ const REGULATIONS = {
         category: "물의 재이용 촉진 및 지원에 관한 법률",
         item: "빗물이용시설 설치",
         basis: "법 제8조, 영 제10조, 규칙 제4조",
-        content: "지붕면적 1,000㎡ 이상(신축·개축·재축 or 증축 누적), 건축면적 10,000㎡ 이상 공동주택, 건축면적 5,000㎡ 이상 학교, 부지면적 100,000㎡ 이상, 매장면적 3,000㎡ 이상",
+        content: "설치 대상:\n• 지붕면적 1,000㎡ 이상 (신축·개축·재축 or 증축 누적)\n• 건축면적 10,000㎡ 이상 공동주택\n• 건축면적 5,000㎡ 이상 학교\n• 부지면적 100,000㎡ 이상\n• 매장면적 3,000㎡ 이상",
         check: (data, context) => {
             let reasons = [];
 
@@ -1044,7 +1058,7 @@ const REGULATIONS = {
         category: "물의 재이용 촉진 및 지원에 관한 법률",
         item: "중수도 설치",
         basis: "법 제9조, 영 제11조, 규칙 제7조",
-        content: "연면적 60,000㎡ 이상 특정시설(숙박업, 대규모점포, 업무시설 등). 지역별 조례에 따라 기준 상이",
+        content: "연면적 60,000㎡ 이상 특정시설\n(숙박업, 대규모점포, 업무시설 등)\n지역별 조례에 따라 기준 상이",
         check: (data, context) => {
             const regionalData = GRAYWATER_REGIONAL_DATA[data.region];
             const threshold = regionalData ? regionalData.area : 60000;
@@ -1088,7 +1102,7 @@ const REGULATIONS = {
         category: "자전거 이용 활성화에 관한 법률",
         item: "자전거 주차장 설치",
         basis: "법 제11조, 영 제7조, 영 별표1",
-        content: "주차장법에 따른 시설물에 자동차 주차대수의 10~20% 자전거 주차장 설치 (5대 미만 제외). 용도별 20%/10% 구분",
+        content: "주차장법에 따른 시설물에 자동차 주차대수의 10~20% 자전거 주차장 설치\n5대 미만 제외\n20% 대상: 문화·집회, 종교, 판매, 운수, 의료, 운동, 업무, 공동주택 등\n10% 대상: 위락, 수련, 공장, 창고, 발전, 관광휴게 등",
         check: (data, context) => {
             if (data.totalFloorArea < 500) {
                 return { applicable: false, detail: "소규모 시설" };
@@ -1132,7 +1146,7 @@ const REGULATIONS = {
         category: "환경영향평가법",
         item: "환경영향평가",
         basis: "법 제2조, 법 제22조, 영 제31조, 영 별표3",
-        content: "도시의 개발사업, 산업입지·산업단지 조성, 에너지개발, 관광단지 개발 등 일정 규모 이상의 사업. 건축물 건축: 연면적 10만㎡ 이상",
+        content: "도시의 개발사업, 산업입지·산업단지 조성, 에너지개발, 관광단지 개발 등\n일정 규모 이상의 사업\n건축물 건축: 연면적 10만㎡ 이상",
         check: (data, context) => {
             // 건축물 건축 기준: 연면적 10만㎡ 이상
             if (data.totalFloorArea >= 100000) {
@@ -1161,7 +1175,7 @@ const REGULATIONS = {
         category: "장애물 없는 생활환경 인증",
         item: "BF 인증",
         basis: "법 제10조의2, 영 제5조의2",
-        content: "국가·지자체·공공기관이 설치하는 공공건물 및 공중이용시설 신축·별동증축·전부개축·재축 시 의무 인증. 공동주택 의무대상 제외",
+        content: "국가·지자체·공공기관이 설치하는 공공건물 및 공중이용시설\n신축·별동증축·전부개축·재축 시 의무 인증\n공동주택 의무대상 제외\n등급: 최우수 90점 이상, 우수 80~90, 일반 70~80\n인증 유효기간 10년",
         check: (data, context) => {
             const targetActions = ['신축', '별동증축', '전부개축', '재축'];
             if (data.ownership !== 'public') {
@@ -1189,7 +1203,7 @@ const REGULATIONS = {
         category: "건축물 마감재료의 난연성능 및 화재 확산 방지구조 기준",
         item: "외벽 준불연 이상 마감재료",
         basis: "법 제52조, 영 제61조, 규칙 제24조, 기준 제31조",
-        content: "3층 이상 또는 높이 9m 이상 건축물의 외벽에 불연 또는 준불연 마감재료 사용. 의료시설, 교육연구시설, 노유자시설, 수련시설의 용도로 쓰이는 건축물 포함",
+        content: "3층 이상 또는 높이 9m 이상 건축물의 외벽에 불연 또는 준불연 마감재료 사용\n의료시설, 교육연구시설, 노유자시설, 수련시설의 용도로 쓰이는 건축물 포함\n1층 전부/일부를 필로티 구조로 설치하여 주차장으로 쓰는 건축물 포함",
         check: (data, context) => {
             return {
                 applicable: true,
@@ -1207,7 +1221,7 @@ const REGULATIONS = {
         category: "환경친화적 자동차의 개발 및 보급 촉진에 관한 법률",
         item: "전기차 충전시설",
         basis: "법 제11조의2, 영 제18조의5~7",
-        content: "주차단위구획 총수(기계식 제외) 50대 이상 시설에 총주차대수의 5% 이상 전용주차구역 및 충전시설 설치 (지역 조례에 따라 차등)",
+        content: "주차단위구획 총수(기계식 제외) 50대 이상 시설\n총주차대수의 5% 이상 전용주차구역 및 충전시설 설치\n지역 조례에 따라 차등\n급속충전시설(40kW 이상) 및 완속충전시설 설치",
         check: (data, context) => {
             const targetActions = ['신축', '증축', '별동증축', '개축', '전부개축', '재축'];
             if (!targetActions.includes(data.buildingAction)) {
@@ -1238,7 +1252,7 @@ const REGULATIONS = {
         category: "지역별 녹색건축물 설계기준",
         item: "지역별 녹색건축물 설계기준",
         basis: "각 지역 녹색건축물 설계기준 고시",
-        content: "에너지절약계획서 제출대상 건축물에 대해 각 지역 녹색건축물 설계기준 적용 (녹색건축인증, 에너지성능, 신재생에너지 비율, 인센티브 등)",
+        content: "에너지절약계획서 제출대상 건축물에 대해 각 지역 녹색건축물 설계기준 적용\n녹색건축인증, 에너지성능, 신재생에너지 비율, 인센티브 등\n등급구분: [가]~[라] (세대수/연면적 기준)",
         check: (data, context) => {
             // 서울은 별도 항목
             if (data.region === '서울특별시') {
@@ -1288,7 +1302,7 @@ const REGULATIONS = {
         category: "서울시 녹색건축물 설계기준",
         item: "서울시 녹색건축 기준",
         basis: "서울특별시 고시 제2025-7호 / 2025.1.2. 시행",
-        content: "에너지절약계획서 제출 대상 건축물 또는 주택법 제15조 사업계획승인 대상 공동주택에 적용. 등급구분 [가]~[라], 환경성능·에너지성능·에너지관리·신재생에너지 부문",
+        content: "에너지절약계획서 제출 대상 건축물 또는 주택법 제15조 사업계획승인 대상 공동주택에 적용\n등급구분 [가]~[라]\n환경성능·에너지성능·에너지관리·신재생에너지 부문\nZEB 인증 취득 시 에너지 성능·관리·신재생에너지 평가 제외",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1384,7 +1398,7 @@ const REGULATIONS = {
         category: "서울시 지구단위계획·유리커튼월 가이드라인",
         item: "서울시 지구단위계획 친환경 기준",
         basis: "서울시 지구단위계획 수립기준·관리운영기준 (2024.10), 서울시 유리커튼월 가이드라인 (2023.12)",
-        content: "지구단위계획 대상의 경우 친환경 계획 검토. 유리커튼월 건물: 연면적 합계 500㎡ 이상(에너지절약계획서 제출대상), 조류충돌 저감구역 내 유리커튼월 건물",
+        content: "지구단위계획 대상의 경우 친환경 계획 검토\n유리커튼월 건물: 연면적 합계 500㎡ 이상(에너지절약계획서 제출대상)\n조류충돌 저감구역 내 유리커튼월 건물\n벽면율 40% 이상 설정, 로이복층유리 또는 로이삼중유리 사양 적용 권장",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1414,7 +1428,7 @@ const REGULATIONS = {
         category: "서울시 생태면적률 운영지침",
         item: "생태면적률",
         basis: "서울시 생태면적률 운영지침 2025.05.21. 시행",
-        content: "서울시 도시관리계획, 개발행위허가 대상 사업 및 공공건축물에 생태면적률 적용",
+        content: "서울시 도시관리계획, 개발행위허가 대상 사업 및 공공건축물에 생태면적률 적용\n공동주택(다세대주택 제외): 30% 이상\n공공 건축물 및 기반시설: 30% 이상\n그 외 건축물: 20% 이상\n녹지지역: 50% 이상",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1445,7 +1459,7 @@ const REGULATIONS = {
         category: "서울시 환경영향평가",
         item: "서울시 환경영향평가",
         basis: "서울특별시 환경영향평가 조례 제9368호, 고시 제2022-844호",
-        content: "서울시 내 도시개발, 정비사업, 택지·대지조성, 건축물 건축(연면적 10만㎡ 이상) 등 일정규모 이상 사업에 환경영향평가 실시",
+        content: "서울시 내 도시개발, 정비사업, 택지·대지조성 등 일정규모 이상 사업\n건축물 건축: 연면적 10만㎡ 이상\n온실가스·신재생에너지·LED·비전기식냉방·녹색건축인증·전기차인프라·빗물관리·생태면적률 등 평가",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1465,7 +1479,7 @@ const REGULATIONS = {
         category: "마곡 도시개발사업 지구단위계획 시행지침",
         item: "마곡지구 친환경 기준",
         basis: "마곡 지구단위계획 시행지침 서울특별시고시 제2024-450호 / 2024.9.19. 시행",
-        content: "마곡지구 내 건축물에 대한 EPI 81점 이상, 빗물이용시설 설치, 하수처리수 재이용, 에너지사용계획, 신재생에너지, 생태면적률 등",
+        content: "마곡지구 내 건축물:\n• 공동주택 외 EPI 81점 이상 의무적용\n• 빗물이용시설 설치 권장\n• 하수처리수 재이용 적극 권장\n• 공공: 생태면적률 30% 이상, 태양광 의무\n• 민간: 생태면적률 20% 이상 (공동주택 30%)",
         check: (data, context) => {
             if (data.region !== '서울특별시' || data.isMagok !== 'yes') {
                 return { applicable: false, detail: "마곡지구 아님" };
@@ -1495,7 +1509,7 @@ const REGULATIONS = {
         category: "서울형 장애물 없는 건물 인증제",
         item: "서울형 장애물 없는 건물 인증",
         basis: "장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제6조",
-        content: "서울지역 민간시설물: 병원, 소매점, 음식점, 공중화장실. 부분인증: 약국, 소매점, 음식점, 장애인용 화장실",
+        content: "서울지역 민간시설물:\n• 전체인증: 병원, 소매점, 음식점, 공중화장실\n• 부분인증: 약국, 소매점, 음식점, 장애인용 화장실\n의무사항은 아니지만 허가권자의 요청이 있을 수 있음",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1512,7 +1526,7 @@ const REGULATIONS = {
         category: "서울특별시 저영향개발 사전협의",
         item: "저영향개발(LID) 사전협의",
         basis: "서울특별시 물순환 회복 및 저영향개발 기본조례 제9473호 (2025.1.3. 시행)",
-        content: "대지면적 2,000㎡ 이상이거나 건축 연면적 1,500㎡ 이상인 건축물 (대지면적 1,000㎡ 이상이거나 연면적 1,500㎡ 이상)",
+        content: "대지면적 1,000㎡ 이상이거나 건축 연면적 1,500㎡ 이상인 건축물\n빗물관리시설 설치 및 빗물분담량 적용\n신축·증축·별동증축·개축·전부개축·재축 대상",
         check: (data, context) => {
             if (data.region !== '서울특별시') {
                 return { applicable: false, detail: "서울특별시 아님" };
@@ -1538,7 +1552,7 @@ const REGULATIONS = {
         category: "건축기준 완화 (인센티브)",
         item: "건축기준 완화 적용",
         basis: "녹색건축물 조성 지원법 제15조, 건축물의 에너지절약설계기준 별표9, 건축법 제56조·제60조·제61조",
-        content: "녹색건축 인증, ZEB 인증, 재활용 건축자재 사용 등에 따른 용적률·건축물 높이 완화. 가~다목 합산 최대 15%",
+        content: "가. 녹색건축 인증: 최우수(그린1등급) 6%, 우수(그린2등급) 3%\n나. ZEB 인증: 1등급/+등급 15%, 2등급 14%, 3등급 13%, 4등급 12%, 5등급 11%\n다. 재활용 건축자재: 25%이상 15%, 20%이상 10%, 15%이상 5%\n가~다목 합산 최대 15%\n용적률·건축물 높이 완화 적용",
         check: (data, context) => {
             let items = [];
 

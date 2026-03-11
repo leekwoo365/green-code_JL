@@ -41,8 +41,11 @@ const SUMMARY_CONFIG = {
     designStandardException: {
         summaryName: "설계기준 적용예외",
         getDesignAction: (data, result) => {
-            if (result.detail.includes('ZEB')) return 'ZEB 인증 시 설계검토서 예외 가능';
-            return 'EPI 제출 예외 조건 확인';
+            if (result.detail.includes('제로에너지건축물 인증 취득')) return '제로에너지건축물 인증 취득 시 설계검토서(의무+성능지표+소요량평가서) 제출 예외 (단, 인허가 시 예비인증서 제출 필요)';
+            if (result.detail.includes('열손실의 변동이 없는')) return '설계검토서(의무+성능지표+소요량평가서) 제출 예외';
+            if (result.detail.includes('제출 대상')) return '성능지표(EPI) 제출 예외 없음 (소요량 평가서 판정기준 만족 시 제출 예외)';
+            if (result.detail.includes('성능지표(EPI)') && result.detail.includes('제출 예외')) return '성능지표(EPI) 제출 예외';
+            return '소요량 평가서 판정기준 만족 시 EPI 제출 예외';
         }
     },
     thermalInsulation: {
@@ -309,21 +312,36 @@ function initializeApp() {
         }
     });
 
-    // 건축행위 선택 시 열손실 변동/별동증축 옵션 표시/숨김
+    // 건축행위 선택 시 조건부 입력 표시/숨김
     const buildingActionSelect = document.getElementById('buildingAction');
     const heatLossGroup = document.getElementById('heatLossGroup');
     const halfExpansionGroup = document.getElementById('halfExpansionGroup');
+    const expansionAreaGroup = document.getElementById('expansionAreaGroup');
 
     buildingActionSelect.addEventListener('change', function() {
         const val = this.value;
         const showHeatLoss = ['증축', '대수선', '용도변경', '건축물기재내용변경'].includes(val);
-        const showHalfExpansion = val === '별동증축';
+        const showHalfExpansion = val === '증축';
 
         heatLossGroup.style.display = showHeatLoss ? 'block' : 'none';
         if (!showHeatLoss) document.getElementById('heatLossChange').value = 'no';
 
         halfExpansionGroup.style.display = showHalfExpansion ? 'block' : 'none';
-        if (!showHalfExpansion) document.getElementById('isHalfExpansion').value = 'no';
+        if (!showHalfExpansion) {
+            document.getElementById('isHalfExpansion').value = 'no';
+            expansionAreaGroup.style.display = 'none';
+            document.getElementById('expansionArea').value = '';
+        }
+    });
+
+    // 1/2 이상 증축 선택 시 증축 연면적 입력 표시/숨김
+    document.getElementById('isHalfExpansion').addEventListener('change', function() {
+        if (this.value === 'yes') {
+            expansionAreaGroup.style.display = 'block';
+        } else {
+            expansionAreaGroup.style.display = 'none';
+            document.getElementById('expansionArea').value = '';
+        }
     });
 
     // 건축물용도 선택 시 세대수 입력 표시/숨김
@@ -412,6 +430,7 @@ function getFormData() {
         buildingAction: document.getElementById('buildingAction').value,
         heatLossChange: document.getElementById('heatLossChange').value,
         isHalfExpansion: document.getElementById('isHalfExpansion').value,
+        expansionArea: parseFloat(document.getElementById('expansionArea').value) || null,
         buildingUse: document.getElementById('buildingUse').value,
         totalFloorArea: parseFloat(document.getElementById('totalFloorArea').value) || 0,
         permitYear: parseInt(document.getElementById('permitYear').value) || 2025,
@@ -581,7 +600,7 @@ function displayResults(data, results, applicableCount, notApplicableCount) {
             <tr>
                 <td class="col-item">${result.item}</td>
                 <td class="col-basis">${result.basis}</td>
-                <td class="col-content">${result.content}</td>
+                <td class="col-content">${result.content.replace(/\n/g, '<br>')}</td>
                 <td class="col-remark">
                     <span class="${remarkClass}">${remarkText}</span>
                     ${result.detail ? `<span class="remark-detail">${result.detail.replace(/\n/g, '<br>')}</span>` : ''}
@@ -607,6 +626,7 @@ function resetForm() {
         document.getElementById('householdGroup').style.display = 'none';
         document.getElementById('heatLossGroup').style.display = 'none';
         document.getElementById('halfExpansionGroup').style.display = 'none';
+        document.getElementById('expansionAreaGroup').style.display = 'none';
         document.getElementById('summarySection').style.display = 'none';
         document.getElementById('resultSection').style.display = 'none';
 
